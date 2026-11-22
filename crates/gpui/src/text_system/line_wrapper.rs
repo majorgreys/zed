@@ -482,6 +482,7 @@ impl LineWrapper {
         // the next line. `/` and `?` stay break opportunities so long paths
         // and URLs (`a/b`, `foo?b=2`) can wrap.
         matches!(c, '!' | ')' | ']' | '}' | '"' | '”' | '»' | '…') ||
+        matches!(c, '+' | '\u{00B2}' | '\u{00B3}' | '\u{00B9}' | '\u{2070}'..='\u{209F}') ||
         // `⋯` character is special used in Zed, to keep this at the end of the line.
         matches!(c, '⋯') ||
 
@@ -1162,6 +1163,11 @@ mod tests {
         assert_word("see)");
         assert_word("quoted”");
         assert_word("well…");
+        assert_word("4,000+");
+        assert_word("C++");
+        assert_word("note¹");
+        assert_word("x²³");
+        assert_word("n⁴⁵");
 
         // Space
         assert_not_word("foo bar");
